@@ -5,7 +5,7 @@ Created on Feb 12, 2021
 I pledge my Honor that I have abided by the Stevens Honor System.
 '''
 def readfil():
-    filename = "export-BloodTree.ged"
+    filename = "dataSet.ged"
     valid_tags = ["INDI", "NAME", "SEX", "BIRT", "DEAT", "FAMC","FAMS","FAM", "MARR", "HUSB", "WIFE", "CHIL", "DIV", "DATE", "HEAD", "TRLR", "NOTE"]
 
     with open(filename) as f:
