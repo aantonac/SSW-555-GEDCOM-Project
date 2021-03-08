@@ -30,6 +30,8 @@ class Family():
         self.wifeName = "" 
         self.children = []
 
+indiv = []
+fams = []
 
 def readfil():
     filename = "dataSet.ged"
@@ -38,9 +40,8 @@ def readfil():
     with open(filename) as f:
         content = f.read().splitlines()
     d = Individual(0)
-    indiv = []
+
     f = Family(0)
-    fams = []
     dateb = False
     dated = False
     datem = False
@@ -127,6 +128,13 @@ def readfil():
 
 
         print(s)
+    calcAges()
+    checkParentAge(fams)
+    checkMaxAge()
+    checkMarriage()
+    checkDeath()
+    check_duplicate_name_and_birth()
+    check_duplicate_spouse_and_marriage_date()
     printData(indiv, fams)
 def findMonth(month):
     months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -135,20 +143,98 @@ def findMonth(month):
             return months.index(mon);
     return 0
 
-def printData(individuals, families):
-    ''' Receive list of Individual objects and Family objects as parameters, print
-    and save output to output.txt'''
-    today = "22 FEB 2021"
+
+
+def check_duplicate_name_and_birth():
+    for individual in indiv:
+        no_duplicate_name_and_birth(individual, indiv)
+
+def check_duplicate_spouse_and_marriage_date():
+    for fam in fams:
+        no_duplicate_spouse_and_marriage_date(fam,fams)
+
+def no_duplicate_name_and_birth(individual, all_individuals):
+    '''for given individual in all_indivuals determine if there is another indivudal with a duplicate name and birthdate'''
+    number_of_name_birth_matches = 0
+
+    for single_individual in all_individuals:
+        if (single_individual.name == individual.name) and (single_individual.birthday == individual.birthday):
+            
+            number_of_name_birth_matches += 1
+
+    if number_of_name_birth_matches > 1:
+        print("ERROR: INDIVIDUAL: US23: {}: Individual name ({}) and birthday ({}) duplicate found".format(individual.id, individual.name, individual.birthday))
+        return False
+
+    return True
+
+def no_duplicate_spouse_and_marriage_date(family, families):
+    number_of_spouse_date_matches = 0
+    for fam in families:
+      if (fam.married != "") and (fam.wifeName != ""):
+        if (fam.married == family.married) and (fam.wifeName == family.wifeName):
+            number_of_spouse_date_matches += 1
+    if number_of_spouse_date_matches > 1:
+        print("ERROR: FAMILY: US24: {}: Family spouse ({}) and marriage date ({}) duplicate found ".format(family.id,family.wifeName, family.married))
+        return False
+    return True
+
+
+
+def largerDate(date1,date2):#returns true if date1 is older than date2
+    datea = date1.split(" ")
+    dateb = date2.split(" ")
+    if datea[2] < dateb[2] :
+        return True
+    if datea[2] > dateb[2] :
+        return False
+    if findMonth(datea[1]) < findMonth(dateb[1]):  
+        return True
+    if findMonth(datea[1]) > findMonth(dateb[1]):  
+        return False   
+    if datea[0] <= dateb[0] : 
+        return True
+    else:
+        return False
+
+def checkParentAge(fams):
+    for fam in fams:
+      husb = Individual(0)
+      wife = Individual(0)
+      children = []
+      for individual in indiv:
+        if fam.husbandID == individual.id:
+          husb = individual
+        if fam.wifeID == individual.id:
+          wife = individual
+        if individual.id in fam.children:
+          children.append(individual)
+      for child in children:
+        try:
+          if int(husb.birthday[-4:]) < int(child.birthday[-4:])-80 :
+            print("ERROR: FAMILY: US12: {}: FATHER TOO OLD FOR CHILD".format(fam.id))
+        except:
+          pass
+        try:
+          if int(wife.birthday[-4:]) < int(child.birthday[-4:])-60 :
+            print("ERROR: FAMILY: US12: {}: WIFE TOO OLD FOR CHILD".format(fam.id))
+        except:
+         pass
+def checkMaxAge():
+    for individual in indiv:
+      try:
+        if individual.age >= 150:
+          print("ERROR: INDIVIDUAL: US07: {}: INDIVIDUAL TOO OLD".format(individual.id))
+      except:
+        pass
+
+def calcAges():
+    today = "8 MAR 2021"
     todate = today.split(" ")
-    individualTable = PrettyTable()
-    individualTable.field_names = [
-                                 'ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive',
-                                 'Death','Child','Spouse'
-                                 ]
-    for individual in individuals:
+    for individual in indiv:
         if individual.birthday != "":    
             birthdate = individual.birthday.split(" ")
-            if(individual.alive):
+            if (individual.alive):
                 age = int(todate[2]) - int(birthdate[2])
                 if findMonth(todate[1]) < findMonth(birthdate[1]) :
                     age -=1
@@ -164,6 +250,42 @@ def printData(individuals, families):
                     if int(deathdate[0])<int(birthdate[0]):
                         age -= 1
             individual.age = age
+
+def checkMarriage():
+    for family in fams:
+        for individual in indiv:
+            if individual.id == family.husbandID:
+                if individual.birthday == "" or family.married == "":
+                    pass
+                else: 
+                    if not largerDate(individual.birthday, family.married):
+                        print("ERROR: FAMILY: US02: {}: HUSBAND BORN BEFORE MARRIAGE".format(family.id))
+            if individual.id == family.wifeID:
+                if individual.birthday == "" or family.married == "":
+                    pass
+                else: 
+                    if not largerDate(individual.birthday, family.married):
+                        print("ERROR: FAMILY: US02: {}: WIFE BORN BEFORE MARRIAGE".format(family.id))
+def checkDeath():
+    for individual in indiv:
+      if not individual.alive :
+        try: 
+          if largerDate(individual.deathdate,individual.birthdate):
+            print("ERROR: INDIVIDUAL: US03: {}: DEAD BEFORE BIRTH".format(individual.id))
+        except:
+          pass
+def printData(individuals, families):
+    ''' Receive list of Individual objects and Family objects as parameters, print
+    and save output to output.txt'''
+    today = "22 FEB 2021"
+    todate = today.split(" ")
+    individualTable = PrettyTable()
+    individualTable.field_names = [
+                                 'ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive',
+                                 'Death','Child','Spouse'
+                                 ]
+    for individual in individuals:
+        
         individualTable.add_row([
                              individual.id, individual.name, individual.gender,
                              individual.birthday, individual.age, individual.alive,
@@ -186,6 +308,7 @@ def printData(individuals, families):
                           family.husbandName, family.wifeID, family.wifeName, 
                           family.children
                         ])
+        
     print('Individuals')
     print(individualTable)
     print('Families')
