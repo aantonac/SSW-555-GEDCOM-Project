@@ -1,0 +1,48 @@
+ERROR: FAMILY: US12: @F1@: FATHER TOO OLD FOR CHILD
+ERROR: FAMILY: US12: @F1@: FATHER TOO OLD FOR CHILD
+ERROR: FAMILY: US12: @F4@: FATHER TOO OLD FOR CHILD
+ERROR: FAMILY: US12: @F4@: WIFE TOO OLD FOR CHILD
+ERROR: INDIVIDUAL: US07: @I2@: INDIVIDUAL TOO OLD
+ERROR: FAMILY: US02: @F1@: WIFE BORN BEFORE MARRIAGE
+ERROR: FAMILY: US02: @F2@: WIFE BORN BEFORE MARRIAGE
+ERROR: FAMILY: US02: @F3@: WIFE BORN BEFORE MARRIAGE
+ERROR: FAMILY: US02: @F4@: HUSBAND BORN BEFORE MARRIAGE
+ERROR: INDIVIDUAL: US03: @I6@: DEAD BEFORE BIRTH
+ERROR: INDIVIDUAL: US03: @I8@: DEAD BEFORE BIRTH
+ERROR: INDIVIDUAL: US23: @I3@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I6@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
+ERROR: FAMILY: US24: @F1@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
+ERROR: FAMILY: US24: @F2@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
+Individuals
++-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
+|   ID  |                     Name                     | Gender |   Birthday   | Age  | Alive |    Death     | Child | Spouse |
++-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
+|   0   |             Alex Waldron UTF-8               |        |              |      |  True |              |  N/A  |  N/A   |
+|  @I1@ |     Alex /Waldron/ Alex Waldron Waldron      |   M    | 1 JUL 2000   |  20  |  True |              |  N/A  |  N/A   |
+|  @I2@ |    Chris /Waldron/ Chris Waldron Waldron     |   M    | 7 JUN 1770   | 250  |  True |              |  N/A  |  N/A   |
+|  @I3@ |   Denise /Ciocher/ Denise Ciocher Waldron    |   F    | 9 APR 2268   | -248 |  True |              |  N/A  |  N/A   |
+|  @I4@ | Victoria /Waldron/ Victoria Waldron Waldron  |   F    | 15 AUG 2002  |  18  |  True |              |  N/A  |  N/A   |
+|  @I5@ |       Ed /Waldron/ Ed Waldron Waldron        |   M    | 24 MAR 1939  |  81  |  True |              |  N/A  |  N/A   |
+|  @I6@ |   Denise /Ciocher/ Denise Ciocher Waldron    |   F    | 9 APR 2268   | -248 | False | 16 JAN 2021  |  N/A  |  N/A   |
+|  @I7@ |   Paul /Rugarber/ Paul Rugarber Rugarber     |   M    | 1 MAR 1970   |  51  |  True |              |  N/A  |  N/A   |
+|  @I8@ |   George /Ciocher/ George Ciocher Ciocher    |   M    | 6 OCT 2016   |  -7  | False | 7 AUG 2010   |  N/A  |  N/A   |
+|  @I9@ |   Roberta /Dupray/ Roberta Dupray Ciocher    |   F    | 3 NOV 1940   |  80  |  True |              |  N/A  |  N/A   |
+| @I10@ |     Lisa /Ciocher/ Lisa Ciocher Baracco      |   F    | 8 OCT 1966   |  54  |  True |              |  N/A  |  N/A   |
+| @I11@ |      Sal /Baracco/ Sal Baracco Baracco       |   M    | 18 JUN 1969  |  51  |  True |              |  N/A  |  N/A   |
+| @I12@ |         Joe /Steen/ Joe Steen Steen          |   M    | 7 DEC 1964   |  56  |  True |              |  N/A  |  N/A   |
+| @I13@ |         Joe /Steen/ Joe Steen Steen          |   M    | 4 FEB 1994   |  27  |  True |              |  N/A  |  N/A   |
+| @I14@ |   Johnathan /Steen/ Johnathan Steen Steen    |   M    | 12 AUG 1996  |  24  |  True |              |  N/A  |  N/A   |
+| @I15@ |      Sal /Baracco/ Sal Baracco Baracco       |   M    | 23 FEB 2001  |  20  |  True |              |  N/A  |  N/A   |
++-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
+Families
++------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
+|  ID  |         Married          |    Divorced    | Husband ID |               Husband Name               | Wife ID |                Wife Name                 |      Children     |
++------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
+|  0   |                          |      N/A       |            |                                          |         |                                          |         []        |
+| @F1@ |       9 AUG 1995         | 27 JUN 2012 N  |    @I2@    |  Chris /Waldron/ Chris Waldron Waldron   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |  ['@I1@', '@I4@'] |
+| @F2@ |       9 AUG 1995         |      N/A       |    @I5@    |     Ed /Waldron/ Ed Waldron Waldron      |   @I6@  | Denise /Ciocher/ Denise Ciocher Waldron  |      ['@I2@']     |
+| @F3@ |      6 JUL 2019 Y        |      N/A       |    @I7@    | Paul /Rugarber/ Paul Rugarber Rugarber   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |         []        |
+| @F4@ | 9 AUG 1961 7 AUG 2010 N  |      N/A       |    @I8@    | George /Ciocher/ George Ciocher Ciocher  |   @I9@  | Roberta /Dupray/ Roberta Dupray Ciocher  | ['@I3@', '@I10@'] |
+| @F5@ |                          |      N/A       |   @I16@    |                                          |    Y    |                                          |         []        |
+| @F6@ |      10 MAY 1998 Y       |      N/A       |   @I11@    |    Sal /Baracco/ Sal Baracco Baracco     |  @I10@  |   Lisa /Ciocher/ Lisa Ciocher Baracco    |     ['@I15@']     |
++------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
