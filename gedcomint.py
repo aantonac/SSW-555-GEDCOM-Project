@@ -128,8 +128,9 @@ def readfil():
 
 
         print(s)
+    initFams()
     calcAges()
-    checkParentAge(fams)
+    checkParentAge()
     checkMaxAge()
     checkMarriage()
     checkDeath()
@@ -171,6 +172,7 @@ def no_duplicate_name_and_birth(individual, all_individuals):
 def no_duplicate_spouse_and_marriage_date(family, families):
     number_of_spouse_date_matches = 0
     for fam in families:
+      
       if (fam.married != "") and (fam.wifeName != ""):
         if (fam.married == family.married) and (fam.wifeName == family.wifeName):
             number_of_spouse_date_matches += 1
@@ -197,7 +199,7 @@ def largerDate(date1,date2):#returns true if date1 is older than date2
     else:
         return False
 
-def checkParentAge(fams):
+def checkParentAge():
     for fam in fams:
       husb = Individual(0)
       wife = Individual(0)
@@ -211,12 +213,12 @@ def checkParentAge(fams):
           children.append(individual)
       for child in children:
         try:
-          if int(husb.birthday[-4:]) < int(child.birthday[-4:])-80 :
+          if int(husb.birthday[-5:]) < int(child.birthday[-5:])-80 :
             print("ERROR: FAMILY: US12: {}: FATHER TOO OLD FOR CHILD".format(fam.id))
         except:
           pass
         try:
-          if int(wife.birthday[-4:]) < int(child.birthday[-4:])-60 :
+          if int(wife.birthday[-5:]) < int(child.birthday[-5:])-60 :
             print("ERROR: FAMILY: US12: {}: WIFE TOO OLD FOR CHILD".format(fam.id))
         except:
          pass
@@ -266,11 +268,19 @@ def checkMarriage():
                 else: 
                     if not largerDate(individual.birthday, family.married):
                         print("ERROR: FAMILY: US02: {}: WIFE BORN BEFORE MARRIAGE".format(family.id))
+def initFams():
+  for family in fams:
+        for individual in indiv:
+            if individual.id == family.husbandID:
+                family.husbandName = individual.name
+            if individual.id == family.wifeID:
+                family.wifeName = individual.name
+
 def checkDeath():
     for individual in indiv:
       if not individual.alive :
         try: 
-          if largerDate(individual.deathdate,individual.birthdate):
+          if largerDate(individual.death,individual.birthday):
             print("ERROR: INDIVIDUAL: US03: {}: DEAD BEFORE BIRTH".format(individual.id))
         except:
           pass
@@ -298,11 +308,7 @@ def printData(individuals, families):
                              'Wife ID', 'Wife Name', 'Children'
                              ]
     for family in families:
-        for individual in individuals:
-            if individual.id == family.husbandID:
-                family.husbandName = individual.name
-            if individual.id == family.wifeID:
-                family.wifeName = individual.name
+        
         familyTable.add_row([
                           family.id, family.married, family.divorced, family.husbandID,
                           family.husbandName, family.wifeID, family.wifeName, 
