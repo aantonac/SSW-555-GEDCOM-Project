@@ -13,13 +13,16 @@ ERROR: INDIVIDUAL: US23: @I3@: Individual name (Denise /Ciocher/ Denise Ciocher 
 ERROR: INDIVIDUAL: US23: @I6@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
 ERROR: FAMILY: US24: @F1@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
 ERROR: FAMILY: US24: @F2@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
+ERROR: FAMILY: US06: @F1@: DEATH BEFORE DIVORCE
+ERROR: INDIVIDUAL: US01: @I3@: BIRTH BEFORE CURRENT DATE
+ERROR: INDIVIDUAL: US01: @I6@: BIRTH BEFORE CURRENT DATE
 Individuals
 +-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
 |   ID  |                     Name                     | Gender |   Birthday   | Age  | Alive |    Death     | Child | Spouse |
 +-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
 |   0   |             Alex Waldron UTF-8               |        |              |      |  True |              |  N/A  |  N/A   |
 |  @I1@ |     Alex /Waldron/ Alex Waldron Waldron      |   M    | 1 JUL 2000   |  20  |  True |              |  N/A  |  N/A   |
-|  @I2@ |    Chris /Waldron/ Chris Waldron Waldron     |   M    | 7 JUN 1770   | 250  |  True |              |  N/A  |  N/A   |
+|  @I2@ |    Chris /Waldron/ Chris Waldron Waldron     |   M    | 7 JUN 1770   | 239  | False | 16 JAN 2010  |  N/A  |  N/A   |
 |  @I3@ |   Denise /Ciocher/ Denise Ciocher Waldron    |   F    | 9 APR 2268   | -248 |  True |              |  N/A  |  N/A   |
 |  @I4@ | Victoria /Waldron/ Victoria Waldron Waldron  |   F    | 15 AUG 2002  |  18  |  True |              |  N/A  |  N/A   |
 |  @I5@ |       Ed /Waldron/ Ed Waldron Waldron        |   M    | 24 MAR 1939  |  81  |  True |              |  N/A  |  N/A   |
@@ -44,5 +47,40 @@ Families
 | @F3@ |      6 JUL 2019 Y        |      N/A       |    @I7@    | Paul /Rugarber/ Paul Rugarber Rugarber   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |         []        |
 | @F4@ | 9 AUG 1961 7 AUG 2010 N  |      N/A       |    @I8@    | George /Ciocher/ George Ciocher Ciocher  |   @I9@  | Roberta /Dupray/ Roberta Dupray Ciocher  | ['@I3@', '@I10@'] |
 | @F5@ |                          |      N/A       |   @I16@    |                                          |    Y    |                                          |         []        |
-| @F6@ |      10 MAY 1998 Y       |      N/A       |   @I11@    |    Sal /Baracco/ Sal Baracco Baracco     |  @I10@  |   Lisa /Ciocher/ Lisa Ciocher Baracco    |     ['@I15@']     |
+| @F6@ |      10 MAY 1975 Y       |      N/A       |   @I11@    |    Sal /Baracco/ Sal Baracco Baracco     |  @I10@  |   Lisa /Ciocher/ Lisa Ciocher Baracco    |     ['@I15@']     |
 +------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
+ERROR: INDIVIDUAL: US03: @I6@: DEAD BEFORE BIRTH
+ERROR: INDIVIDUAL: US03: @I8@: DEAD BEFORE BIRTH
+ERROR: FAMILY: US02: @F1@: WIFE BORN BEFORE MARRIAGE
+ERROR: FAMILY: US02: @F2@: WIFE BORN BEFORE MARRIAGE
+ERROR: FAMILY: US02: @F3@: WIFE BORN BEFORE MARRIAGE
+ERROR: FAMILY: US02: @F4@: HUSBAND BORN BEFORE MARRIAGE
+ERROR: INDIVIDUAL: US11: Individual (Denise /Ciocher/ Denise Ciocher Waldron ) belongs to more than one family (@F1@, @F3@)
+ERROR: INDIVIDUAL: US11: Individual (Denise /Ciocher/ Denise Ciocher Waldron ) belongs to more than one family (@F3@, @F1@)
+ERROR: INDIVIDUAL: US07: @I2@: INDIVIDUAL TOO OLD
+ERROR: FAMILY: US12: @F1@: FATHER TOO OLD FOR CHILD
+ERROR: FAMILY: US12: @F1@: FATHER TOO OLD FOR CHILD
+ERROR: FAMILY: US12: @F4@: FATHER TOO OLD FOR CHILD
+ERROR: FAMILY: US12: @F4@: WIFE TOO OLD FOR CHILD
+ERROR: INDIVIDUAL: US23: @I3@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I6@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
+ERROR: FAMILY: US24: @F1@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
+ERROR: FAMILY: US24: @F2@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
+ERROR: INDIVIDUAL: US01: @I3@: BIRTH BEFORE CURRENT DATE
+ERROR: INDIVIDUAL: US01: @I6@: BIRTH BEFORE CURRENT DATE
+ERROR: FAMILY: US06: @F1@: DEATH BEFORE DIVORCE
+ERROR: FAMILY: US10: @F1@: Marriage occurred before wife (Denise /Ciocher/ Denise Ciocher Waldron ) was 14
+ERROR: FAMILY: US10: @F2@: Marriage occurred before wife (Denise /Ciocher/ Denise Ciocher Waldron ) was 14
+ERROR: FAMILY: US21: 0: Husband Alice is not a male
+ERROR: FAMILY: US21: 0: Wife Alex Waldron is not a female
+ERROR: FAMILY: US22: Duplicate Family ID: 0
+ERROR: FAMILY: US22: Duplicate Family ID: 0
+ERROR: INDIVIDUAL: US22: Duplicate Individual ID: 0
+ERROR: INDIVIDUAL: US22: Duplicate Individual ID: 0
+ERROR: INDIVIDUAL: US23: 0: Individual name (Alex Waldron) and birthday (01 JUL 2000) duplicate found
+ERROR: INDIVIDUAL: US23: 0: Individual name (Alex Waldron) and birthday (01 JUL 2000) duplicate found
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.042s
+
+OK
