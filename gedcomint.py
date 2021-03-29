@@ -3,7 +3,7 @@
 We pledge our Honor that we have abided by the Stevens Honor System.
 '''
 from prettytable import PrettyTable
-
+import unittest
 class Individual:
     def __init__(self, id):
         self.id = id
@@ -136,6 +136,10 @@ def readfil():
     checkDeath()
     check_duplicate_name_and_birth()
     check_duplicate_spouse_and_marriage_date()
+    checkDivorceBeforeDeath()
+    checkDatesBeforeCurrent()
+    check_correct_gender_for_role()
+    check_unique_famID_indID(fams, indiv)
     printData(indiv, fams)
 def findMonth(month):
     months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -147,12 +151,18 @@ def findMonth(month):
 
 
 def check_duplicate_name_and_birth():
+    check = True
     for individual in indiv:
-        no_duplicate_name_and_birth(individual, indiv)
+        if not no_duplicate_name_and_birth(individual, indiv):
+            check = False
+    return check
 
 def check_duplicate_spouse_and_marriage_date():
+    check = True
     for fam in fams:
-        no_duplicate_spouse_and_marriage_date(fam,fams)
+        if not no_duplicate_spouse_and_marriage_date(fam,fams):
+            check = False
+    return check
 
 def no_duplicate_name_and_birth(individual, all_individuals):
     '''for given individual in all_indivuals determine if there is another indivudal with a duplicate name and birthdate'''
@@ -181,6 +191,92 @@ def no_duplicate_spouse_and_marriage_date(family, families):
         return False
     return True
 
+def check_correct_gender_for_role():
+    for fam in fams:
+        
+        correct_gender_for_role(fam,indiv)
+
+def correct_gender_for_role(family, all_individuals):
+    ''' for provided family look up husband ID and wife ID and ensure they are male and female '''
+    returnDict = {"husbandMale": True, "wifeFemale": True}   
+    husband = get_individual_at_id(family.husbandID, all_individuals)
+    if husband is not None:
+        if husband.gender != 'M':
+            returnDict["husbandMale"] = False
+            print(f'ERROR: FAMILY: US21: {family.id}: Husband {husband.name} is not a male')
+
+    wife = get_individual_at_id(family.wifeID,all_individuals)
+    if wife is not None:
+        if wife.gender != 'F':
+            
+            returnDict["wifeFemale"] = False
+            print(f'ERROR: FAMILY: US21: {family.id}: Wife {wife.name} is not a female')
+
+    return returnDict
+
+
+def check_unique_famID_indID(families, individuals):
+    returnDict = {'uniqueFamIDs':True, 'uniqueIndIDs':True}
+    
+    fam_ids = [family.id for family in families]
+    for fam_id in fam_ids:
+        if fam_ids.count(fam_id) > 1:
+            print(f'ERROR: FAMILY: US22: Duplicate Family ID: {fam_id}')
+            returnDict['uniqueFamIDs'] = False
+
+
+    ind_ids = [individual.id for individual in individuals]
+    for ind_id in ind_ids:
+        if ind_ids.count(ind_id) > 1:
+            print(f'ERROR: INDIVIDUAL: US22: Duplicate Individual ID: {ind_id}')
+            returnDict['uniqueIndIDs'] = False
+
+    return returnDict
+
+def get_individual_at_id(individual_id, all_individuals):
+    
+    for individual in all_individuals:
+        
+        if str(individual.id) == str(individual_id):
+            return individual
+            break
+
+def marriedAfterFourteen():
+    check = True
+    for fam in fams:
+      husb = Individual(0)
+      wife = Individual(0)
+      for individual in indiv:
+        if fam.husbandID == individual.id:
+          husb = individual
+        if fam.wifeID == individual.id:
+          wife = individual
+      try:  
+        if int(fam.married[-5:]) <= int(husb.birthday[-5:])+14:
+          print("ERROR: FAMILY: US10: {}: Marriage occurred before husband ({}) was 14".format(fam.id, fam.husbandName))
+          check = False
+        if int(fam.married[-5:]) <= int(wife.birthday[-5:])+14:
+          print("ERROR: FAMILY: US10: {}: Marriage occurred before wife ({}) was 14".format(fam.id, fam.wifeName))
+          check = False
+      except:
+        pass
+    return check
+def checkForBigamy(family):
+    check = True
+    for fam in fams:
+      if (family.husbandID == fam.husbandID) and (family.wifeID != fam.wifeID):
+        print("ERROR: INDIVIDUAL: US11: Individual ({}) belongs to more than one family ({}, {})".format(family.husbandName, family.id, fam.id))
+        check = False
+      if (family.husbandID != fam.husbandID) and (family.wifeID == fam.wifeID):
+        print("ERROR: INDIVIDUAL: US11: Individual ({}) belongs to more than one family ({}, {})".format(family.wifeName, family.id, fam.id))
+        check = False
+    return check
+def checkAllForBigamy():
+    check = True
+    for fam in fams:
+      if not checkForBigamy(fam):
+          check = False
+    return check
 
 
 def largerDate(date1,date2):#returns true if date1 is older than date2
@@ -200,6 +296,7 @@ def largerDate(date1,date2):#returns true if date1 is older than date2
         return False
 
 def checkParentAge():
+    check = True
     for fam in fams:
       husb = Individual(0)
       wife = Individual(0)
@@ -215,21 +312,26 @@ def checkParentAge():
         try:
           if int(husb.birthday[-5:]) < int(child.birthday[-5:])-80 :
             print("ERROR: FAMILY: US12: {}: FATHER TOO OLD FOR CHILD".format(fam.id))
+            check = False
         except:
           pass
         try:
           if int(wife.birthday[-5:]) < int(child.birthday[-5:])-60 :
             print("ERROR: FAMILY: US12: {}: WIFE TOO OLD FOR CHILD".format(fam.id))
+            check = False
         except:
          pass
+    return check
 def checkMaxAge():
+    check = True
     for individual in indiv:
       try:
         if individual.age >= 150:
           print("ERROR: INDIVIDUAL: US07: {}: INDIVIDUAL TOO OLD".format(individual.id))
+          check = False
       except:
         pass
-
+    return check
 def calcAges():
     today = "8 MAR 2021"
     todate = today.split(" ")
@@ -254,6 +356,7 @@ def calcAges():
             individual.age = age
 
 def checkMarriage():
+    check = True
     for family in fams:
         for individual in indiv:
             if individual.id == family.husbandID:
@@ -262,12 +365,15 @@ def checkMarriage():
                 else: 
                     if not largerDate(individual.birthday, family.married):
                         print("ERROR: FAMILY: US02: {}: HUSBAND BORN BEFORE MARRIAGE".format(family.id))
+                        check = False
             if individual.id == family.wifeID:
                 if individual.birthday == "" or family.married == "":
                     pass
                 else: 
                     if not largerDate(individual.birthday, family.married):
                         print("ERROR: FAMILY: US02: {}: WIFE BORN BEFORE MARRIAGE".format(family.id))
+                        check = False
+    return check
 def initFams():
   for family in fams:
         for individual in indiv:
@@ -277,13 +383,70 @@ def initFams():
                 family.wifeName = individual.name
 
 def checkDeath():
+    check = True
     for individual in indiv:
       if not individual.alive :
         try: 
           if largerDate(individual.death,individual.birthday):
             print("ERROR: INDIVIDUAL: US03: {}: DEAD BEFORE BIRTH".format(individual.id))
+            check = False
         except:
           pass
+    return check
+def checkDatesBeforeCurrent():
+    today = "29 MAR 2021"
+    check = 0
+    for family in fams:
+        if family.married == "":
+           pass
+        else:
+            if largerDate(today, family.married) :
+                print("ERROR: FAMILY: US01: {}: MARRIAGE BEFORE CURRENT DATE".format(family.id))
+                check +=1
+        if family.divorced == "N/A":
+           pass
+        else:
+            if largerDate(today, family.divorced) :
+                print("ERROR: FAMILY: US01: {}: DIVORCE BEFORE CURRENT DATE".format(family.id))
+                check +=1
+
+    for individual in indiv:
+        if individual.birthday == "":
+           pass
+        else:
+            if largerDate(today, individual.birthday) :
+                print("ERROR: INDIVIDUAL: US01: {}: BIRTH BEFORE CURRENT DATE".format(individual.id))
+                check +=1
+        if individual.death == "":
+           pass
+        else:
+            if largerDate(today, individual.death) :
+                print("ERROR: INDIVIDUAL: US01: {}: DEATH BEFORE CURRENT DATE".format(individual.id))
+                check +=1
+    return check
+def checkDivorceBeforeDeath():
+    check = True
+    for family in fams:
+        if family.divorced == "N/A":
+            pass
+        else:
+            for individual in indiv:
+                if family.husbandID == individual.id:
+                    if individual.alive:
+                        pass
+                    else:
+                        if largerDate(individual.death, family.divorced) : 
+                            print("ERROR: FAMILY: US06: {}: DEATH BEFORE DIVORCE".format(family.id))
+                            check = False
+                if family.wifeID == individual.id:
+                    if individual.alive:
+                        pass
+                    else:
+                        if largerDate(individual.death, family.divorced) : 
+                            print("ERROR: FAMILY: US06: {}: DEATH BEFORE DIVORCE".format(family.id))
+                            check = False
+    return check
+
 def printData(individuals, families):
     ''' Receive list of Individual objects and Family objects as parameters, print
     and save output to output.txt'''
@@ -325,6 +488,145 @@ def printData(individuals, families):
         'Individuals\n' + individualTable.get_string() + '\nFamilies\n' + familyTable.get_string()
         )
     output.close()
+class Test(unittest.TestCase):
+    readfil()
+    def testBirthBeforeMarriage(self): 
+        self.assertFalse(checkMarriage() , "There is an individual with an incorrect marriage")
+    def testBirthBeforeDeath(self): 
+        self.assertFalse(checkDeath() , "There is an individual with an incorrect death date")
+    def testDivorceBeforeDeath(self): 
+        self.assertFalse(checkDivorceBeforeDeath() , "There is a Family with an incorrect divorce date")
+    def testDateBeforeCurrentDate(self): 
+        self.assertEquals(checkDatesBeforeCurrent(),2 , "There are 2 individuals/families with an incorrect date")
+    def testCheckMaxAge(self):
+        self.assertFalse(checkMaxAge() , "There is an Individual who is too old")     
+    def testCheckParentAge(self):
+        self.assertFalse(checkParentAge() , "There is an Individual who is too old to be a parent")
+    def testCheckAllForBigamy(self):
+        self.assertFalse(checkAllForBigamy() , "There is an Individual who is in two or more marriages")
+    def testMarriedAfterFourteen(self):
+        self.assertFalse(marriedAfterFourteen() , "There is an Individual who is married under 15 years old")
+    def testCheck_duplicate_spouse_and_marriage_date(self):
+        self.assertFalse(check_duplicate_spouse_and_marriage_date() , "There is an a real doppleganger")
+    def testCheck_duplicate_name_and_birth(self):
+        self.assertFalse(check_duplicate_name_and_birth() , "There is an a real doppleganger")
+
+    def test_single_indivual(self):
+        '''Test individual list with single Individual'''
+        #create test indivual
+        individual, all_individuals = self._create_individual_and_list()
+        #test where there is only one individual
+        error_msg = "Could not handle individual list with single entry"
+        self.assertTrue(no_duplicate_name_and_birth(individual, all_individuals), error_msg)
+
+    def test_no_duplicates(self):
+        '''ensures the test is true with no duplicates'''
+        individual, all_individuals = self._create_individual_and_list()
+
+
+        completely_different_individual = Individual(1)
+        completely_different_individual.name = "Joe Smith"
+        completely_different_individual.birthday = "04 AUG 1968"
+        all_individuals.append(completely_different_individual)
+        error_msg = "No duplicate name and birthday. Main functionality broken"
+        self.assertTrue(no_duplicate_name_and_birth(individual, all_individuals), error_msg)
+
+    def test_two_duplicates(self):
+        '''main functionality, test to detect a pair of duplicates'''
+        individual, all_individuals = self._create_individual_and_list()
+
+        duplicate_individual = Individual(2)
+        duplicate_individual.name = "Alex Waldron"
+        duplicate_individual.birthday = "01 JUL 2000"
+
+        all_individuals.append(duplicate_individual)
+        error_msg = "Could not detect duplicate individual when one was present"
+        self.assertFalse(no_duplicate_name_and_birth(individual, all_individuals), error_msg)
+
+
+    def test_multiple_duplicates(self):
+        '''Test case with multiple duplicates '''
+        individual, all_individuals = self._create_individual_and_list()
+
+        duplicate_individual = Individual(2)
+        duplicate_individual.name = "Alex Waldron"
+        duplicate_individual.birthday = "01 JUL 2000"
+        all_individuals.append(duplicate_individual)
+
+        another_duplicate_individual = Individual(3)
+        another_duplicate_individual.name = "Alex Waldron"
+        another_duplicate_individual.birthday = "01 JUL 2000"
+        all_individuals.append(another_duplicate_individual)
+
+        error_msg = "Could not detect multiple duplicate individuals"
+        self.assertFalse(no_duplicate_name_and_birth(individual, all_individuals), error_msg)
+
+    def test_same_names(self):
+        '''test individuals with the same name but different birthdays'''
+        individual, all_individuals = self._create_individual_and_list()
+
+        same_name_individual = Individual(4)
+        same_name_individual.name = "Alex Waldron"
+        same_name_individual.birthday = "04 AUG 1988"
+        all_individuals.append(same_name_individual)
+
+        error_msg = "detected duplicate when only names were the same not birthday"
+        self.assertTrue(no_duplicate_name_and_birth(individual, all_individuals), error_msg)
+
+    def test_correct_husb_role(self):
+        individual, all_individuals = self._create_individual_and_list()
+        newIndividual = Individual(5)
+        newIndividual.name = "Alice"
+        newIndividual.gender = 'F'
+        individual.gender = "F"
+        all_individuals.append(newIndividual)
+        testFam = Family(0)
+        testFam.wifeID = 0
+        testFam.husbandID = 5 
+        error_msg = "did not detect husband being female"
+        self.assertFalse(correct_gender_for_role(testFam, all_individuals)["husbandMale"], error_msg)
+
+    def test_correct_wife_role(self):
+        individual, all_individuals = self._create_individual_and_list()
+        newIndividual = Individual(5)
+        newIndividual.name = "Alice"
+        newIndividual.gender = 'M'
+        individual.gender = "M"
+        all_individuals.append(newIndividual)
+        testFam = Family(0)
+        testFam.wifeID = 0
+        testFam.husbandID = 5 
+        error_msg = "did not detect wife being male"
+        self.assertFalse(correct_gender_for_role(testFam, all_individuals)["wifeFemale"], error_msg)
+
+    def test_duplicate_fam_ids(self):
+        fam1 = Family(0)
+        fam2 = Family(0)
+
+        error_msg = "did not detect duplicate family ids"
+        self.assertFalse(check_unique_famID_indID([fam1,fam2],[Individual(0)])['uniqueFamIDs'], error_msg)
+
+    def test_duplicate_ind_ids(self):
+        ind1 = Individual(0)
+        ind2 = Individual(0)
+
+        error_msg = "did not detect duplicate individual ids"
+        self.assertFalse(check_unique_famID_indID([Family(0)],[ind1,ind2])['uniqueIndIDs'], error_msg)
+
+
+
+    def _create_individual_and_list(self):
+        '''returns tuple of individual and list with single individual'''
+        individual = Individual(0)
+        individual.name = "Alex Waldron"
+        individual.birthday = "01 JUL 2000"
+        
+        all_individuals = [individual]
+        return (individual, all_individuals)
+
+    
 
 if __name__ == '__main__':
-    readfil()
+    #readfil()
+    suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+    unittest.TextTestRunner().run(suite)
