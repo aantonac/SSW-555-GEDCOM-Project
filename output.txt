@@ -11,11 +11,33 @@ ERROR: INDIVIDUAL: US03: @I6@: DEAD BEFORE BIRTH
 ERROR: INDIVIDUAL: US03: @I8@: DEAD BEFORE BIRTH
 ERROR: INDIVIDUAL: US23: @I3@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
 ERROR: INDIVIDUAL: US23: @I6@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I16@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I17@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I18@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I19@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I20@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I21@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I22@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I23@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I24@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I25@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I26@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I27@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I28@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I29@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I30@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I31@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I32@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
 ERROR: FAMILY: US24: @F1@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
 ERROR: FAMILY: US24: @F2@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
 ERROR: FAMILY: US06: @F1@: DEATH BEFORE DIVORCE
 ERROR: INDIVIDUAL: US01: @I3@: BIRTH BEFORE CURRENT DATE
 ERROR: INDIVIDUAL: US01: @I6@: BIRTH BEFORE CURRENT DATE
+ERROR: FAMILY: US04: @F6@: DIVORCE BEFORE MARRIAGE
+ERROR: FAMILY: US05: @F3@: HUSBAND DEATH BEFORE MARRIAGE
+ERROR: FAMILY: US25: Two children have the same first name and date of birth: Michael 3 OCT 1945 
+ERROR: FAMILY: US15: @F7@: Family consists of 15 or greater siblings
+ERROR: FAMILY: US14: @F7@: Family consists of more than 5 births on one day
 Individuals
 +-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
 |   ID  |                     Name                     | Gender |   Birthday   | Age  | Alive |    Death     | Child | Spouse |
@@ -27,7 +49,7 @@ Individuals
 |  @I4@ | Victoria /Waldron/ Victoria Waldron Waldron  |   F    | 15 AUG 2002  |  18  |  True |              |  N/A  |  N/A   |
 |  @I5@ |       Ed /Waldron/ Ed Waldron Waldron        |   M    | 24 MAR 1939  |  81  |  True |              |  N/A  |  N/A   |
 |  @I6@ |   Denise /Ciocher/ Denise Ciocher Waldron    |   F    | 9 APR 2268   | -248 | False | 16 JAN 2021  |  N/A  |  N/A   |
-|  @I7@ |   Paul /Rugarber/ Paul Rugarber Rugarber     |   M    | 1 MAR 1970   |  51  |  True |              |  N/A  |  N/A   |
+|  @I7@ |   Paul /Rugarber/ Paul Rugarber Rugarber     |   M    | 1 MAR 1970   |  48  | False | 16 JAN 2019  |  N/A  |  N/A   |
 |  @I8@ |   George /Ciocher/ George Ciocher Ciocher    |   M    | 6 OCT 2016   |  -7  | False | 7 AUG 2010   |  N/A  |  N/A   |
 |  @I9@ |   Roberta /Dupray/ Roberta Dupray Ciocher    |   F    | 3 NOV 1940   |  80  |  True |              |  N/A  |  N/A   |
 | @I10@ |     Lisa /Ciocher/ Lisa Ciocher Baracco      |   F    | 8 OCT 1966   |  54  |  True |              |  N/A  |  N/A   |
@@ -36,19 +58,39 @@ Individuals
 | @I13@ |         Joe /Steen/ Joe Steen Steen          |   M    | 4 FEB 1994   |  27  |  True |              |  N/A  |  N/A   |
 | @I14@ |   Johnathan /Steen/ Johnathan Steen Steen    |   M    | 12 AUG 1996  |  24  |  True |              |  N/A  |  N/A   |
 | @I15@ |      Sal /Baracco/ Sal Baracco Baracco       |   M    | 23 FEB 2001  |  20  |  True |              |  N/A  |  N/A   |
+| @I16@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I17@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I18@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I19@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I20@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I21@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I22@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I23@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I24@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I25@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I26@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I27@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I28@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I29@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I30@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I31@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I32@ |     Michael /Smith/ Michael Smith Smith      |   M    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
+| @I33@ |    Michaela /Smith/ Michaela Smith Smith     |   F    | 3 OCT 1945   |  75  |  True |              |  N/A  |  N/A   |
 +-------+----------------------------------------------+--------+--------------+------+-------+--------------+-------+--------+
 Families
-+------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
-|  ID  |         Married          |    Divorced    | Husband ID |               Husband Name               | Wife ID |                Wife Name                 |      Children     |
-+------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
-|  0   |                          |      N/A       |            |                                          |         |                                          |         []        |
-| @F1@ |       9 AUG 1995         | 27 JUN 2012 N  |    @I2@    |  Chris /Waldron/ Chris Waldron Waldron   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |  ['@I1@', '@I4@'] |
-| @F2@ |       9 AUG 1995         |      N/A       |    @I5@    |     Ed /Waldron/ Ed Waldron Waldron      |   @I6@  | Denise /Ciocher/ Denise Ciocher Waldron  |      ['@I2@']     |
-| @F3@ |      6 JUL 2019 Y        |      N/A       |    @I7@    | Paul /Rugarber/ Paul Rugarber Rugarber   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |         []        |
-| @F4@ | 9 AUG 1961 7 AUG 2010 N  |      N/A       |    @I8@    | George /Ciocher/ George Ciocher Ciocher  |   @I9@  | Roberta /Dupray/ Roberta Dupray Ciocher  | ['@I3@', '@I10@'] |
-| @F5@ |                          |      N/A       |   @I16@    |                                          |    Y    |                                          |         []        |
-| @F6@ |      10 MAY 1975 Y       |      N/A       |   @I11@    |    Sal /Baracco/ Sal Baracco Baracco     |  @I10@  |   Lisa /Ciocher/ Lisa Ciocher Baracco    |     ['@I15@']     |
-+------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+-------------------+
++------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+|  ID  |         Married          |    Divorced    | Husband ID |               Husband Name               | Wife ID |                Wife Name                 |                                                                     Children                                                                     |
++------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+|  0   |                          |      N/A       |            |                                          |         |                                          |                                                                        []                                                                        |
+| @F1@ |       9 AUG 1995         | 27 JUN 2012 N  |    @I2@    |  Chris /Waldron/ Chris Waldron Waldron   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |                                                                 ['@I1@', '@I4@']                                                                 |
+| @F2@ |       9 AUG 1995         |      N/A       |    @I5@    |     Ed /Waldron/ Ed Waldron Waldron      |   @I6@  | Denise /Ciocher/ Denise Ciocher Waldron  |                                                                     ['@I2@']                                                                     |
+| @F3@ |      6 JUL 2019 Y        |      N/A       |    @I7@    | Paul /Rugarber/ Paul Rugarber Rugarber   |   @I3@  | Denise /Ciocher/ Denise Ciocher Waldron  |                                                                        []                                                                        |
+| @F4@ | 9 AUG 1961 7 AUG 2010 N  |      N/A       |    @I8@    | George /Ciocher/ George Ciocher Ciocher  |   @I9@  | Roberta /Dupray/ Roberta Dupray Ciocher  |                                                                ['@I3@', '@I10@']                                                                 |
+| @F5@ |                          |      N/A       |   @I16@    |   Michael /Smith/ Michael Smith Smith    |    Y    |                                          |                                                                        []                                                                        |
+| @F6@ |       10 MAY 1975        | 27 JUN 1974 Y  |   @I11@    |    Sal /Baracco/ Sal Baracco Baracco     |  @I10@  |   Lisa /Ciocher/ Lisa Ciocher Baracco    |                                                                    ['@I15@']                                                                     |
+| @F8@ |       6 OCT 1990         | 7 MAR 1996 N   |   @I12@    |       Joe /Steen/ Joe Steen Steen        |  @I10@  |   Lisa /Ciocher/ Lisa Ciocher Baracco    |                                                                ['@I13@', '@I14@']                                                                |
+| @F7@ |      10 MAY 1976 Y       |      N/A       |   @I32@    |   Michael /Smith/ Michael Smith Smith    |  @I33@  |  Michaela /Smith/ Michaela Smith Smith   | ['@I16@', '@I17@', '@I18@', '@I19@', '@I20@', '@I21@', '@I22@', '@I23@', '@I24@', '@I25@', '@I26@', '@I27@', '@I28@', '@I29@', '@I30@', '@I31@'] |
++------+--------------------------+----------------+------------+------------------------------------------+---------+------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ERROR: INDIVIDUAL: US03: @I6@: DEAD BEFORE BIRTH
 ERROR: INDIVIDUAL: US03: @I8@: DEAD BEFORE BIRTH
 ERROR: FAMILY: US02: @F1@: WIFE BORN BEFORE MARRIAGE
@@ -57,6 +99,10 @@ ERROR: FAMILY: US02: @F3@: WIFE BORN BEFORE MARRIAGE
 ERROR: FAMILY: US02: @F4@: HUSBAND BORN BEFORE MARRIAGE
 ERROR: INDIVIDUAL: US11: Individual (Denise /Ciocher/ Denise Ciocher Waldron ) belongs to more than one family (@F1@, @F3@)
 ERROR: INDIVIDUAL: US11: Individual (Denise /Ciocher/ Denise Ciocher Waldron ) belongs to more than one family (@F3@, @F1@)
+ERROR: INDIVIDUAL: US11: Individual (Lisa /Ciocher/ Lisa Ciocher Baracco ) belongs to more than one family (@F6@, @F8@)
+ERROR: INDIVIDUAL: US11: Individual (Lisa /Ciocher/ Lisa Ciocher Baracco ) belongs to more than one family (@F8@, @F6@)
+ERROR: FAMILY: US05: @F3@: HUSBAND DEATH BEFORE MARRIAGE
+ERROR: FAMILY: US04: @F6@: DIVORCE BEFORE MARRIAGE
 ERROR: INDIVIDUAL: US07: @I2@: INDIVIDUAL TOO OLD
 ERROR: FAMILY: US12: @F1@: FATHER TOO OLD FOR CHILD
 ERROR: FAMILY: US12: @F1@: FATHER TOO OLD FOR CHILD
@@ -64,6 +110,23 @@ ERROR: FAMILY: US12: @F4@: FATHER TOO OLD FOR CHILD
 ERROR: FAMILY: US12: @F4@: WIFE TOO OLD FOR CHILD
 ERROR: INDIVIDUAL: US23: @I3@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
 ERROR: INDIVIDUAL: US23: @I6@: Individual name (Denise /Ciocher/ Denise Ciocher Waldron ) and birthday (9 APR 2268 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I16@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I17@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I18@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I19@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I20@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I21@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I22@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I23@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I24@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I25@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I26@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I27@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I28@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I29@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I30@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I31@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
+ERROR: INDIVIDUAL: US23: @I32@: Individual name (Michael /Smith/ Michael Smith Smith ) and birthday (3 OCT 1945 ) duplicate found
 ERROR: FAMILY: US24: @F1@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
 ERROR: FAMILY: US24: @F2@: Family spouse (Denise /Ciocher/ Denise Ciocher Waldron ) and marriage date (9 AUG 1995 ) duplicate found 
 ERROR: INDIVIDUAL: US01: @I3@: BIRTH BEFORE CURRENT DATE
@@ -71,16 +134,22 @@ ERROR: INDIVIDUAL: US01: @I6@: BIRTH BEFORE CURRENT DATE
 ERROR: FAMILY: US06: @F1@: DEATH BEFORE DIVORCE
 ERROR: FAMILY: US10: @F1@: Marriage occurred before wife (Denise /Ciocher/ Denise Ciocher Waldron ) was 14
 ERROR: FAMILY: US10: @F2@: Marriage occurred before wife (Denise /Ciocher/ Denise Ciocher Waldron ) was 14
+ERROR: FAMILY: US10: @F6@: Marriage occurred before husband (Sal /Baracco/ Sal Baracco Baracco ) was 14
+ERROR: FAMILY: US10: @F6@: Marriage occurred before wife (Lisa /Ciocher/ Lisa Ciocher Baracco ) was 14
+ERROR: FAMILY: US15: @F7@: Family consists of 15 or greater siblings
+ERROR: FAMILY: US14: @F7@: Family consists of more than 5 births on one day
 ERROR: FAMILY: US21: 0: Husband Alice is not a male
 ERROR: FAMILY: US21: 0: Wife Alex Waldron is not a female
+ERROR: FAMILY: US25: Two children have the same first name and date of birth: Alex 1 JUL 2000
 ERROR: FAMILY: US22: Duplicate Family ID: 0
 ERROR: FAMILY: US22: Duplicate Family ID: 0
 ERROR: INDIVIDUAL: US22: Duplicate Individual ID: 0
 ERROR: INDIVIDUAL: US22: Duplicate Individual ID: 0
+ERROR: FAMILY: US18: Wife ID:@I2@ and Husband ID:@I1@ are siblings. Siblings shouldn't marry
 ERROR: INDIVIDUAL: US23: 0: Individual name (Alex Waldron) and birthday (01 JUL 2000) duplicate found
 ERROR: INDIVIDUAL: US23: 0: Individual name (Alex Waldron) and birthday (01 JUL 2000) duplicate found
 
 ----------------------------------------------------------------------
-Ran 19 tests in 0.042s
+Ran 25 tests in 0.059s
 
 OK
