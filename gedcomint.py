@@ -140,6 +140,12 @@ def readfil():
     checkDatesBeforeCurrent()
     check_correct_gender_for_role()
     check_unique_famID_indID(fams, indiv)
+    checkMarriageBeforeDivorce()
+    checkMarriageBeforeDeath()
+    check_siblings_married()
+    check_child_duplicate()
+    checkMaxSiblings()
+    checkAllTuplets()
     printData(indiv, fams)
 def findMonth(month):
     months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -148,7 +154,36 @@ def findMonth(month):
             return months.index(mon);
     return 0
 
+def checkMaxSiblings():
+    check = True
+    for fam in fams:
+        if len(fam.children) >= 15 :
 
+            print("ERROR: FAMILY: US15: {}: Family consists of 15 or greater siblings".format(fam.id))
+            check = False
+    return check
+
+def countTuplets(fam):
+    check = True
+    mostBirths = 0
+    for child in fam.children:
+        tuplets = 1
+        for child2 in fam.children:
+            if child != child2 and get_individual_at_id(child,indiv).birthday == get_individual_at_id(child2,indiv).birthday:
+                tuplets+=1
+        if tuplets >= mostBirths:
+            mostBirths = tuplets
+    if mostBirths > 5:
+        print("ERROR: FAMILY: US14: {}: Family consists of more than 5 births on one day".format(fam.id))
+        check = False
+    return check
+
+def checkAllTuplets():
+    check = True
+    for fam in fams:
+        if not countTuplets(fam):
+            check = False
+    return check
 
 def check_duplicate_name_and_birth():
     check = True
@@ -232,6 +267,37 @@ def check_unique_famID_indID(families, individuals):
             returnDict['uniqueIndIDs'] = False
 
     return returnDict
+
+def check_child_duplicate():
+  for fam in fams:
+    duplicate_children(fam, indiv)
+
+def duplicate_children(family, individuals):
+  children = []
+  for childID in family.children :
+    children.append(get_individual_at_id(childID, individuals))
+  for child1 in children:
+    count = 0
+    for child2 in children:
+      if child1.name.split()[0] == child2.name.split()[0] and child1.birthday == child2.birthday:
+        count += 1
+      if count > 1:
+        print(f"ERROR: FAMILY: US25: Two children have the same first name and date of birth: {child1.name.split()[0]} {child1.birthday}")
+        return True 
+  return False
+
+def check_siblings_married():
+  for fam in fams:
+    wifeID = fam.wifeID
+    husbandID = fam.husbandID
+    are_husb_wife_siblings(wifeID, husbandID, fams)
+
+def are_husb_wife_siblings(wifeID, husbandID, families):
+  for family in families:
+    if (wifeID in family.children) and (husbandID in family.children):
+      print(f"ERROR: FAMILY: US18: Wife ID:{wifeID} and Husband ID:{husbandID} are siblings. Siblings shouldn't marry" )
+      return True
+  return False
 
 def get_individual_at_id(individual_id, all_individuals):
     
@@ -393,6 +459,40 @@ def checkDeath():
         except:
           pass
     return check
+def checkMarriageBeforeDivorce():
+    check = True
+    for family in fams:
+        if family.divorced != "N/A":
+            if family.married == "":
+                print("ERROR: FAMILY: US04: {}: DIVORCE WITHOUT MARRIAGE".format(family.id))
+                check = False
+            if largerDate(family.divorced, family.married):
+                print("ERROR: FAMILY: US04: {}: DIVORCE BEFORE MARRIAGE".format(family.id))
+                check = False
+            
+    return check
+def checkMarriageBeforeDeath():
+    check = True
+    for family in fams:
+        if family.married == "":
+            continue
+        for individual in indiv:
+            if individual.id == family.husbandID:
+                if individual.alive :
+                    pass
+                else:
+                    if largerDate(individual.death, family.married):
+                        print("ERROR: FAMILY: US05: {}: HUSBAND DEATH BEFORE MARRIAGE".format(family.id))
+                        check = False
+            if individual.id == family.wifeID:
+                if individual.alive :
+                    pass
+                else:
+                    if largerDate(individual.death, family.married):
+                        print("ERROR: FAMILY: US05: {}: WIFE DEATH BEFORE MARRIAGE".format(family.id))
+                        check = False
+    return check
+
 def checkDatesBeforeCurrent():
     today = "29 MAR 2021"
     check = 0
@@ -510,6 +610,14 @@ class Test(unittest.TestCase):
         self.assertFalse(check_duplicate_spouse_and_marriage_date() , "There is an a real doppleganger")
     def testCheck_duplicate_name_and_birth(self):
         self.assertFalse(check_duplicate_name_and_birth() , "There is an a real doppleganger")
+    def testCheckMarriageBeforeDivorce(self):
+        self.assertFalse(checkMarriageBeforeDivorce(), "There is a person married after their divorce")
+    def testCheckMarriageBeforeDeath(self):
+        self.assertFalse(checkMarriageBeforeDeath(), "There is a person married after their death")
+    def testMultipleBirths(self):
+        self.assertFalse(checkAllTuplets(), "There is a family with 6 or more children born at once")
+    def testMaxSiblings(self):
+        self.assertFalse(checkMaxSiblings(), "There is a family with 15 or more children")
 
     def test_single_indivual(self):
         '''Test individual list with single Individual'''
@@ -613,7 +721,43 @@ class Test(unittest.TestCase):
         error_msg = "did not detect duplicate individual ids"
         self.assertFalse(check_unique_famID_indID([Family(0)],[ind1,ind2])['uniqueIndIDs'], error_msg)
 
+    def test_husband_wife_siblings(self):
+      test_husb_id = "@I1@"
+      test_wife_id = "@I2@"
 
+      fam1 = Family(0)
+      fam1.husbandID = test_husb_id
+      fam1.wifeID = test_wife_id
+
+      fam2 = Family(1)
+      fam2.children = [test_husb_id, test_wife_id]
+
+      families = [fam1,fam2]
+      error_msg = "did not detect husband and wife being siblings"
+      self.assertTrue(are_husb_wife_siblings(test_wife_id, test_husb_id, families), error_msg)
+
+    def test_duplicate_child(self):
+      child1_id = "@I2@"
+      child2_id = "@I3@"
+
+      child1 = Individual(child1_id)
+      child1.name = "Alex Waldron"
+      child1.birthday = "1 JUL 2000"
+
+      child2 = Individual(child2_id)
+      child2.name = "Alex Waldron"
+      child2.birthday = "1 JUL 2000"
+
+      individuals = [child1, child2]
+
+      family = Family(0)
+      family.children = [child1_id, child2_id]
+
+      error_msg = "Did not detect two children with same first name and birthday"
+      self.assertTrue(duplicate_children(family, individuals), error_msg)
+
+      
+      
 
     def _create_individual_and_list(self):
         '''returns tuple of individual and list with single individual'''
