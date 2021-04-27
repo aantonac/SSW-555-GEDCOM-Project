@@ -1,8 +1,11 @@
+
 '''
 @authors: Steven Santiago Andrew Antonacci Alex Waldron
 We pledge our Honor that we have abided by the Stevens Honor System.
 '''
 from prettytable import PrettyTable
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import unittest
 class Individual:
     def __init__(self, id):
@@ -146,6 +149,12 @@ def readfil():
     check_child_duplicate()
     checkMaxSiblings()
     checkAllTuplets()
+    childBeforeMarriageParent()
+    childBeforeDeathParent()
+    check_marriage_to_descendants()
+    check_first_cousin_marry()
+    checkAllTimesBetweenSiblings()
+    checkMaleLastNames()
     printData(indiv, fams)
 def findMonth(month):
     months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -153,6 +162,34 @@ def findMonth(month):
         if mon == month:
             return months.index(mon);
     return 0
+
+def checkMaleLastNames():
+    check = True
+    for fam in fams:
+        for child in fam.children:
+            if fam.husbandName.split()[-1] != get_individual_at_id(child, indiv).name.split()[-1] and get_individual_at_id(child, indiv).gender == 'M':
+                print("ERROR: FAMILY:: US16: {}: Family contains male child with different last name ({})".format(fam.id, child))
+                check = False
+    return check
+
+def timeBetweenSiblings(fam):
+    check = True
+    for child in fam.children:
+        for child2 in fam.children:
+            if child != child2:
+                child1Bday = get_individual_at_id(child, indiv).birthday
+                child2Bday = get_individual_at_id(child2, indiv).birthday
+                if abs(difference_between_dates(child1Bday, child2Bday).days) >= 2 and abs(difference_between_dates(child1Bday, child2Bday).days/30) < 8:
+                    check = False
+                    print("ERROR: FAMILY: US13: {}: Family contains siblings({},{}) with birthdays >2 days or <8 months apart".format(fam.id, child, child2))
+    return check
+
+def checkAllTimesBetweenSiblings():
+  check = True
+  for fam in fams:
+    if not timeBetweenSiblings(fam):
+      check = False
+  return check
 
 def checkMaxSiblings():
     check = True
@@ -184,6 +221,93 @@ def checkAllTuplets():
         if not countTuplets(fam):
             check = False
     return check
+
+def check_marriage_to_descendants():
+    for family in fams:
+        no_marriage_to_descendants(family, fams)
+
+def no_marriage_to_descendants(family, fams):
+    husband = family.husbandID
+    wife = family.wifeID
+    children = family.children
+    if (husband is not None) and (wife is not None):
+        for fam in fams:
+            test_husb = fam.husbandID
+            test_wife = fam.wifeID
+            for child in children:
+                if (test_husb in children) and (test_wife == wife):
+                    print(f"ERROR: FAMILY: US17: {fam.id}: Mother ({wife}) married her child ({test_husb})")
+                    return False
+                    break
+                elif (test_wife in children) and (test_husb == husband):
+                    print(f"ERROR: FAMILY: US17: {fam.id}: Father ({husband}) married his child ({test_wife})")
+                    return False
+                    break
+    return True
+
+def check_first_cousin_marry(families = fams):
+    for fam in families:
+        are_first_cousins_married(fam)
+
+
+def are_first_cousins_married(fam,families = fams):
+    
+    children = fam.children
+    childrens_fams = [get_family_with_husb_wife_id(child,families) for child in children if get_family_with_husb_wife_id(child,families) is not None]
+    cousins = [family.children for family in childrens_fams]
+    married_cousins = None
+    married_cousins_fam_id = None
+    num_of_sibling_sets = len(cousins)
+    detected_marriages = 0
+    for sibling_set1 in cousins:
+        for sibling1 in sibling_set1:
+            for sibling_set2 in cousins:
+                if not sibling_set1 == sibling_set2:
+                    for sibling2 in sibling_set2:
+                        are_married_result, fam_id = are_married(sibling1, sibling2, families)
+                        if are_married_result:
+                            married_cousins = [sibling1, sibling2]
+                            married_cousins_fam_id = fam_id
+    if married_cousins is not None:
+        print(f"ERROR: FAMILY: US19: {married_cousins_fam_id}: First cousins {married_cousins[0]} and {married_cousins[1]} are married")
+        return True
+
+    return False
+
+def are_married(id1, id2, families = fams):
+    
+    for fam in families:
+        if ((fam.husbandID == id1) and (fam.wifeID == id2)) or ((fam.wifeID == id1) and (fam.husbandID == id2)):    
+            return True, fam.id
+    else:
+        return False, None
+
+def get_family_with_husb_wife_id(husb_wife_id, families):
+    
+    for family in families:
+        if (husb_wife_id == family.husbandID) or (husb_wife_id == family.wifeID):
+            return family
+            
+def months_between_dates(date1, date2):
+    date1_datetime = convert_string_to_datetime(date1)
+    date2_datetime = convert_string_to_datetime(date2)
+    delta = relativedelta(date1_datetime, date2_datetime)
+    total_months = abs((delta.years *12) + delta.months)
+    return total_months
+
+def difference_between_dates(date1, date2):
+    '''returns date1-date2 as datetime object'''
+    date1_datetime = convert_string_to_datetime(date1)
+    date2_datetime = convert_string_to_datetime(date2)
+    return date1_datetime - date2_datetime
+
+def convert_string_to_datetime(date_string):
+    date_string_list = date_string.split(' ')[:3]
+    date_string = " ".join(date_string_list)
+    print(date_string)
+
+    return datetime.strptime(date_string, '%d %b %Y').date()
+
 
 def check_duplicate_name_and_birth():
     check = True
@@ -306,6 +430,58 @@ def get_individual_at_id(individual_id, all_individuals):
         if str(individual.id) == str(individual_id):
             return individual
             break
+def childBeforeMarriageParent():
+    check1 = True
+    check2 = True
+    for fam in fams:
+        for individual in indiv:
+            for child in fam.children:
+              if child == individual.id:
+                if largerDate(individual.birthday,fam.married):
+
+                    print("ERROR: FAMILY: US08: Child {} was born before marriage in family {}".format(child, fam.id))
+                    check1 = False
+                if fam.divorced != "N/A":
+
+                    if largerDate(addNineMonths(fam.divorced),individual.birthday):
+
+                        print("ERROR: FAMILY: US08: Child {} was born after 9 months after divroce in family {}".format(child, fam.id))
+                        check2 = False
+    return check1 or check2
+
+def childBeforeDeathParent():
+    check1 = True
+    check2 = True
+    for fam in fams:
+        for individual in indiv:
+            if individual.id == fam.wifeID:
+                if not individual.alive:
+                  for individualc in indiv:
+                    for child in fam.children:
+                        if child == individualc.id:
+                          if largerDate(individualc.birthday,individual.death):
+                            print("ERROR: FAMILY: US09: Child {} was born after mother death in family {}".format(child, fam.id))
+                            check1 = False
+            if individual.id == fam.husbandID:
+                if not individual.alive:
+                  for individualc in indiv:
+                    for child in fam.children:
+                      if child == individualc.id:
+                        if largerDate(individualc.birthday,addNineMonths(individual.death)):
+                            print("ERROR: FAMILY: US09: Child {} was born after 9 months after husband death in family {}".format(child, fam.id))
+                            check2 = False
+
+    return check1 or check2
+
+def addNineMonths(date):
+    #returns 9 months past the date.
+    months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    date9 = date.split(" ")
+    if findMonth(date9[1])<=2:
+        return "{} {} {}".format(date9[0],months[findMonth(date9[1])+9],date9[2] )
+    else:
+        year = int(date9[2])
+        return "{} {} {}".format(date9[0],months[findMonth(date9[1])-3],year+1)
 
 def marriedAfterFourteen():
     check = True
@@ -618,6 +794,14 @@ class Test(unittest.TestCase):
         self.assertFalse(checkAllTuplets(), "There is a family with 6 or more children born at once")
     def testMaxSiblings(self):
         self.assertFalse(checkMaxSiblings(), "There is a family with 15 or more children")
+    def testChildBeforeMarriageParent(self):
+        self.assertFalse(childBeforeMarriageParent(), "There is a child born before marriage or after a divorce")
+    def testChildBeforeDeathParent(self):
+        self.assertFalse(childBeforeDeathParent(), "There is a child born before the death of their parent")
+    def testSiblingGaps(self):
+        self.assertFalse(checkAllTimesBetweenSiblings(), "There are siblings born less than 9 months apart that aren't twins")
+    def testMaleLastNames(self):
+        self.assertFalse(checkMaleLastNames(), "There is a male with a different last name than their family")
 
     def test_single_indivual(self):
         '''Test individual list with single Individual'''
@@ -757,6 +941,43 @@ class Test(unittest.TestCase):
       self.assertTrue(duplicate_children(family, individuals), error_msg)
 
       
+    def test_no_marriage_to_descendants(self):
+        fam1 = Family("@F1@")
+        fam1.husbandID = "@I0@"
+        fam1.wifeID = "@I1@"
+        fam1.children = ["@I2@", "@I3@"]
+
+        fam2 = Family("@F2@")
+        fam2.husbandID = "@I0@"
+        fam2.wifeID = "@I2@"
+
+        families = [fam1, fam2]
+        
+        error_msg = "Did not detect father married to child"
+        self.assertFalse(no_marriage_to_descendants(fam1, families), error_msg)
+
+    def test_married_cousins(self):
+        fam1 = Family("@F1@")
+        fam1.husbandID = "@I0@"
+        fam1.wifeID = "@I1@"
+        fam1.children = ["@I2@", "@I3@"]
+
+        fam1_1 =  Family("@F2@")
+        fam1_1.husbandID = "@I2@" 
+        fam1_1.children = ["@I4@"]
+
+        fam1_2 = Family("@F2@")
+        fam1_2.husbandID = "@I3@"
+        fam1_2.children = ["@I5@"]
+
+        fam1_1_1 = Family("@F3@")
+        fam1_1_1.husbandID = "@I4@"
+        fam1_1_1.wifeID = "@I5@"
+        families = [fam1, fam1_1, fam1_2, fam1_1_1]
+
+        error_msg = "Could not detect cousins were married"
+        self.assertTrue(are_first_cousins_married(fam1, families), error_msg)
+
       
 
     def _create_individual_and_list(self):
